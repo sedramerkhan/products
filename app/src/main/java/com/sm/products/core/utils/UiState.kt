@@ -1,5 +1,4 @@
-package com.sm.products.core.presentation
-
+package com.sm.products.core.utils
 
 sealed class UiState<out T> {
     object Loading : UiState<Nothing>()

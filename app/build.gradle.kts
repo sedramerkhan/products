@@ -56,6 +56,11 @@ dependencies {
 
     // Coil for image loading
     implementation(libs.coil.compose)
+    implementation(libs.coil.mp)
+    implementation(libs.coil.compose.core)
+    implementation(libs.coil.network.ktor2)
+    implementation(libs.coil.network.ktor3)
+    implementation(libs.coil.network.okhttp)
 
     // Retrofit for networking
     implementation(libs.retrofit)

@@ -1,8 +1,7 @@
-package com.sm.products.core.presentation
+package com.sm.products.core.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-
 
 sealed interface UiText {
     data class DynamicString(val value: String) : UiText
