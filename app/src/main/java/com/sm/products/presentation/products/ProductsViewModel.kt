@@ -22,8 +22,9 @@ class ProductsViewModel @Inject constructor(
     private val repository: IProductRepository
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow<UiState<List<Product>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<List<Product>>> = _uiState
+
+    private val _uiState = MutableStateFlow<UiState<Map<String, List<Product>>>>(UiState.Loading)
+    val uiState: StateFlow<UiState<Map<String, List<Product>>>> = _uiState
         .onStart {
             if (_uiState.value !is UiState.Success) {
                 getProducts()
@@ -38,8 +39,8 @@ class ProductsViewModel @Inject constructor(
     fun getProducts() {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
-             repository.getProducts().onSuccess {
-                _uiState.value = UiState.Success(it)
+            repository.getProducts().onSuccess {
+                _uiState.value = UiState.Success(it.groupBy { it.category })
             }.onError {
                 _uiState.value = UiState.Error(it.toUiText())
             }

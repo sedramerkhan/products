@@ -27,8 +27,9 @@ fun ProductCard(product: Product) {
             .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
-        Column(Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-//
+        Column(Modifier.padding(top = 16.dp, bottom = 8.dp, start = 8.dp, end = 8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+
+            ///Image
             CoilImage(
                 modifier = Modifier
                     .height(200.dp)
@@ -36,6 +37,8 @@ fun ProductCard(product: Product) {
                 path = product.imageUrl
             )
             Spacer(Modifier.height(8.dp))
+
+            ///Title
             Text(
                 product.title,
                 style = MaterialTheme.typography.titleMedium,
@@ -44,6 +47,8 @@ fun ProductCard(product: Product) {
                 overflow = TextOverflow.Ellipsis
             )
             Spacer(Modifier.height(4.dp))
+
+            ///Price
             Text("$${product.price}",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.secondary

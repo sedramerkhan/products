@@ -1,6 +1,5 @@
 package com.sm.products.presentation.products
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material3.*
@@ -14,9 +13,9 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.sm.products.core.utils.UiState
 import com.sm.products.domain.model.Product
+import com.sm.products.presentation.products.components.CategoryText
 import com.sm.products.presentation.products.components.ProductCard
 
-@OptIn(ExperimentalFoundationApi::class)
 @Destination<RootGraph>(start = true)
 @Composable
 fun ProductsScreenRoot(
@@ -28,10 +27,9 @@ fun ProductsScreenRoot(
     ProductsScreen(state)
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProductsScreen(
-    state: UiState<List<Product>>
+    state: UiState<Map<String, List<Product>>>
 ) {
 
     Scaffold { innerPadding->
@@ -56,8 +54,18 @@ fun ProductsScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(state.data) { product ->
-                        ProductCard(product)
+                    state.data.forEach { category, products ->
+
+                        // Category should span across 2 columns
+                        item(span = { GridItemSpan(maxLineSpan) }) {
+                           CategoryText(category)
+                        }
+
+                        items(products) { product ->
+                            ProductCard(product)
+                        }
+
+
                     }
                 }
             }
