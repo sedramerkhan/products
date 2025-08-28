@@ -1,4 +1,4 @@
-package com.sm.products.core.presentation.components
+package com.sm.products.core.presentation.components.image
 
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat

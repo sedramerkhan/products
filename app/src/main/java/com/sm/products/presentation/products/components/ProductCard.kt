@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.sm.products.core.presentation.components.CoilImage
+import com.sm.products.core.presentation.components.image.CoilImage
 import com.sm.products.domain.model.Product
 
 @Composable

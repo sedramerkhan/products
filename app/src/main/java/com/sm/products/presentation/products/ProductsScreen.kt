@@ -11,6 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.sm.products.core.presentation.components.ErrorView
 import com.sm.products.core.utils.UiState
 import com.sm.products.domain.model.Product
 import com.sm.products.presentation.products.components.CategoryText
@@ -24,12 +25,13 @@ fun ProductsScreenRoot(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     //for testability
-    ProductsScreen(state)
+    ProductsScreen(state,viewModel::getProducts)
 }
 
 @Composable
 fun ProductsScreen(
-    state: UiState<Map<String, List<Product>>>
+    state: UiState<Map<String, List<Product>>>,
+    getProduct: ()-> Unit,
 ) {
 
     Scaffold { innerPadding->
@@ -42,7 +44,7 @@ fun ProductsScreen(
 
             is UiState.Error -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(state.message.asString(), color = MaterialTheme.colorScheme.error)
+                    ErrorView(Modifier,state.message.asString(), onRetry = getProduct)
                 }
             }
 
