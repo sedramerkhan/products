@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Products</string>
+    <string name="error_disk_full">Disk is full.</string>
+    <string name="error_no_internet">No internet connection.</string>
+    <string name="error_request_timeout">Request timed out.</string>
+    <string name="error_serialization">Serialization failed.</string>
+    <string name="error_too_many_requests">Too many requests.</string>
+    <string name="error_unknown">Unknown error occurred.</string>
 </resources>

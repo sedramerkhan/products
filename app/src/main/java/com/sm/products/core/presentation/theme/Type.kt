@@ -1,4 +1,4 @@
-package com.sm.products.ui.theme
+package com.sm.products.core.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
