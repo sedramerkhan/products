@@ -16,6 +16,7 @@ import com.sm.products.core.utils.UiState
 import com.sm.products.domain.model.Product
 import com.sm.products.presentation.products.components.CategoryText
 import com.sm.products.presentation.products.components.ProductCard
+import com.sm.products.presentation.products.components.ProductsLoader
 
 @Destination<RootGraph>(start = true)
 @Composable
@@ -25,33 +26,33 @@ fun ProductsScreenRoot(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     //for testability
-    ProductsScreen(state,viewModel::getProducts)
+    ProductsScreen(state, viewModel::getProducts)
 }
 
 @Composable
 fun ProductsScreen(
     state: UiState<Map<String, List<Product>>>,
-    getProduct: ()-> Unit,
+    getProduct: () -> Unit,
 ) {
 
-    Scaffold { innerPadding->
+
+    Scaffold { innerPadding ->
+        val modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
         when (state) {
             is UiState.Loading -> {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
+                ProductsLoader(modifier)
             }
 
             is UiState.Error -> {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    ErrorView(Modifier,state.message.asString(), onRetry = getProduct)
-                }
+                ErrorView(modifier, state.message.asString(), onRetry = getProduct)
             }
 
             is UiState.Success -> {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
-                    modifier = Modifier.padding(innerPadding).fillMaxSize(),
+                    modifier = modifier,
                     contentPadding = PaddingValues(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -60,7 +61,7 @@ fun ProductsScreen(
 
                         // Category should span across 2 columns
                         item(span = { GridItemSpan(maxLineSpan) }) {
-                           CategoryText(category)
+                            CategoryText(category)
                         }
 
                         items(products) { product ->
