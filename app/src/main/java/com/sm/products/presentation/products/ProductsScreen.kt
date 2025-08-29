@@ -9,21 +9,31 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.generated.destinations.ProductScreenRootDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.sm.products.core.presentation.components.ErrorView
 import com.sm.products.core.presentation.components.PullToRefreshBox
 import com.sm.products.core.presentation.components.CustomToastHost
 import com.sm.products.presentation.products.components.ProductsList
 import com.sm.products.presentation.products.components.ProductsListShimmer
 
+
 @Destination<RootGraph>(start = true)
 @Composable
 fun ProductsScreenRoot(
-    viewModel: ProductsViewModel = hiltViewModel()
+    viewModel: ProductsViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    //for testability
-    ProductsScreen(state, viewModel::onPullToRefreshTrigger, viewModel::getProducts)
+    //for previewing && testability
+    ProductsScreen(
+        state, viewModel::onPullToRefreshTrigger, viewModel::getProducts,
+        onProductClicked = { id ->
+            navigator.navigate(ProductScreenRootDestination(id))
+
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,8 +42,10 @@ fun ProductsScreen(
     state: ProductsUiState,
     pullToRefresh: () -> Unit,
     getProduct: () -> Unit,
+    onProductClicked: (Int) -> Unit
+
 ) {
-    Log.d("custum", "ProductsScreen ${state}")
+    Log.d("custum", "ProductsScreen $state")
 
     Scaffold { innerPadding ->
         val modifier = Modifier
@@ -42,7 +54,7 @@ fun ProductsScreen(
 
         if (state.data.isNotEmpty()) {
             PullToRefreshBox(isRefreshing = state.isRefreshing, onRefresh = pullToRefresh) {
-                ProductsList(modifier, state.data)
+                ProductsList(modifier, state.data, onClick = onProductClicked)
             }
 
             if (state.error != null) {

@@ -25,8 +25,10 @@ import com.sm.products.core.utils.extensions.shimmer
 import com.sm.products.domain.model.Product
 
 @Composable
-fun ProductCard(product: Product) {
+fun ProductCard(product: Product,
+                onClick: () -> Unit = {}){
     Card(
+        onClick = onClick,
         modifier = Modifier
             .padding(4.dp)
             .fillMaxSize()

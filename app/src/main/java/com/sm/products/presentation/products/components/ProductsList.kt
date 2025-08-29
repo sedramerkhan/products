@@ -20,8 +20,9 @@ import com.sm.products.domain.model.Product
 @Composable
 fun ProductsList(
     modifier: Modifier,
-    data: Map<String, List<Product>>
-){
+    data: Map<String, List<Product>>,
+    onClick: (Int) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         modifier = modifier,
@@ -37,11 +38,12 @@ fun ProductsList(
             }
 
             items(products) { product ->
-                ProductCard(product)
+                ProductCard(product, onClick = { onClick(product.id) })
             }
         }
     }
 }
+
 @Composable
 fun ProductsListShimmer(
     modifier: Modifier

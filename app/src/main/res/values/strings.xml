@@ -6,4 +6,8 @@
     <string name="error_serialization">Serialization failed.</string>
     <string name="error_too_many_requests">Too many requests.</string>
     <string name="error_unknown">Unknown error occurred.</string>
+    <string name="rating">Rating: %1$s}/5.0</string>
+    <string name="based_on_reviews">Based on %1$d reviews</string>
+    <string name="description">Description</string>
+    <string name="category">Category: %1$s</string>
 </resources>
