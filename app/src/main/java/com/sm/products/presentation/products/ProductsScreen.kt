@@ -1,17 +1,18 @@
 package com.sm.products.presentation.products
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.sm.products.core.presentation.components.ErrorView
+import com.sm.products.core.presentation.components.PullToRefreshBox
 import com.sm.products.core.utils.UiState
 import com.sm.products.domain.model.Product
 import com.sm.products.presentation.products.components.CategoryText
@@ -24,32 +25,31 @@ fun ProductsScreenRoot(
     viewModel: ProductsViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     //for testability
-    ProductsScreen(state, viewModel::getProducts)
+    ProductsScreen(state, viewModel.products,isRefreshing,  viewModel::onPullToRefreshTrigger,viewModel::getProducts)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductsScreen(
     state: UiState<Map<String, List<Product>>>,
+    data: Map<String, List<Product>>,
+    isRefreshing: Boolean,
+    pullToRefresh: () -> Unit,
     getProduct: () -> Unit,
 ) {
+    Log.d("cust","dff ${state}")
 
 
     Scaffold { innerPadding ->
         val modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
-        when (state) {
-            is UiState.Loading -> {
-                ProductsLoader(modifier)
-            }
 
-            is UiState.Error -> {
-                ErrorView(modifier, state.message.asString(), onRetry = getProduct)
-            }
-
-            is UiState.Success -> {
+        if(data.isNotEmpty()){
+            PullToRefreshBox(isRefreshing = isRefreshing, onRefresh = pullToRefresh) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = modifier,
@@ -57,7 +57,7 @@ fun ProductsScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    state.data.forEach { category, products ->
+                    data.forEach { category, products ->
 
                         // Category should span across 2 columns
                         item(span = { GridItemSpan(maxLineSpan) }) {
@@ -71,6 +71,21 @@ fun ProductsScreen(
 
                     }
                 }
+            }
+
+        }
+
+        when (state) {
+            is UiState.Loading -> {
+                if(data.isEmpty())
+                ProductsLoader(modifier)
+            }
+
+            is UiState.Error -> {
+                ErrorView(modifier, state.message.asString(), onRetry = getProduct)
+            }
+
+            is UiState.Success -> {
             }
         }
 

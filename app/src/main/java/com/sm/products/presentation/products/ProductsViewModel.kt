@@ -1,5 +1,6 @@
 package com.sm.products.presentation.products
 
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sm.products.core.domain.onError
@@ -36,15 +37,31 @@ class ProductsViewModel @Inject constructor(
             _uiState.value
         )
 
-    fun getProducts() {
-        _uiState.value = UiState.Loading
-        viewModelScope.launch {
-            repository.getProducts().onSuccess {
-                _uiState.value = UiState.Success(it.groupBy { it.category })
-            }.onError {
-                _uiState.value = UiState.Error(it.toUiText())
-            }
+    private val _isRefreshing = MutableStateFlow(false)
+
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
+    var products: Map<String, List<Product>> = mutableStateMapOf()
+
+
+    private suspend fun fetchProducts() {
+        repository.getProducts().onSuccess {
+            products = it.groupBy { it.category }.toMutableMap()
+            _uiState.value = UiState.Success(products)
+        }.onError {
+            _uiState.value = UiState.Error(it.toUiText())
         }
+    }
+
+    fun getProducts() = viewModelScope.launch {
+        _uiState.value = UiState.Loading
+        fetchProducts()
+    }
+
+    fun onPullToRefreshTrigger() = viewModelScope.launch {
+        _isRefreshing.value = true
+        fetchProducts()
+        _isRefreshing.value = false
     }
 
 }
