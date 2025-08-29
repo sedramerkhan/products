@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun Modifier.shimmer(cornerRadius: Dp = 0.dp): Modifier {
+fun Modifier.shimmer(cornerRadius: Dp = 8.dp): Modifier {
     val shimmerColors = listOf(
         Color.LightGray.copy(alpha = 0.3f),
         Color.White.copy(alpha = 0.6f),

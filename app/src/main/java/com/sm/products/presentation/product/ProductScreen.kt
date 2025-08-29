@@ -12,7 +12,7 @@ import com.sm.products.core.presentation.components.ErrorView
 import com.sm.products.presentation.product.components.ProductDetails
 import com.sm.products.presentation.product.components.ProductDetailsShimmer
 
-@Destination<RootGraph>
+@Destination<RootGraph>(style = ProductsDetailsTransitions::class)
 @Composable
 fun ProductScreenRoot(
     productId: Int,
