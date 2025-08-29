@@ -27,7 +27,7 @@ class ProductsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ProductsUiState())
     val uiState: StateFlow<ProductsUiState> = _uiState
         .onStart {
-            if (_uiState.value.data.isNotEmpty()) {
+            if (_uiState.value.data.isEmpty()) {
                 getProducts()
             }
         }
