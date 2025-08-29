@@ -12,8 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.sm.products.core.utils.networkMonitor.ConnectionState
-import com.sm.products.core.utils.networkMonitor.connectivityState
+import com.sm.products.core.networkMonitor.ConnectionState
+import com.sm.products.core.networkMonitor.connectivityState
 
 @Composable
 @ExperimentalMaterial3Api

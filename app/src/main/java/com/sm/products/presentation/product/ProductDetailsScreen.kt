@@ -14,13 +14,13 @@ import com.sm.products.presentation.product.components.ProductDetailsShimmer
 
 @Destination<RootGraph>(style = ProductsDetailsTransitions::class)
 @Composable
-fun ProductScreenRoot(
+fun ProductDetailsScreenRoot(
     productId: Int,
-    viewModel: ProductViewModel = hiltViewModel(),
+    viewModel: ProductDetailsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    ProductScreen(
+    ProductDetailsScreen(
         state = state,
         onRetry = viewModel::getProduct,
     )
@@ -28,8 +28,8 @@ fun ProductScreenRoot(
 
 
 @Composable
-fun ProductScreen(
-    state: ProductUiState,
+fun ProductDetailsScreen(
+    state: ProductDetailsUiState,
     onRetry: () -> Unit
 ) {
 

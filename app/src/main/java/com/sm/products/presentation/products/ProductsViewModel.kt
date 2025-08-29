@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sm.products.core.domain.onError
 import com.sm.products.core.domain.onSuccess
-import com.sm.products.core.utils.toUiText
+import com.sm.products.core.presentation.utils.toUiText
 import com.sm.products.domain.model.Product
 import com.sm.products.domain.repository.IProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

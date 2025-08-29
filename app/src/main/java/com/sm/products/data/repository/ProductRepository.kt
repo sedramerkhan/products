@@ -4,7 +4,7 @@ import com.sm.products.core.data.safeCall
 import com.sm.products.core.domain.DataError
 import com.sm.products.core.domain.Result
 import com.sm.products.core.domain.map
-import com.sm.products.core.utils.networkMonitor.NetworkMonitor
+import com.sm.products.core.networkMonitor.NetworkMonitor
 import com.sm.products.data.model.ProductResponse
 import com.sm.products.data.remote.ProductApi
 import com.sm.products.domain.model.Product

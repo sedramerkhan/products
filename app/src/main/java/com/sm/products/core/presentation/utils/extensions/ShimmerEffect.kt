@@ -1,4 +1,4 @@
-package com.sm.products.core.utils.extensions
+package com.sm.products.core.presentation.utils.extensions
 
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateFloat

@@ -1,6 +1,6 @@
 package com.sm.products.presentation.products
 
-import com.sm.products.core.utils.UiText
+import com.sm.products.core.presentation.utils.UiText
 import com.sm.products.domain.model.Product
 
 data class ProductsUiState(

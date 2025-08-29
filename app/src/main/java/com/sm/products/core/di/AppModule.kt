@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 
 import com.sm.products.core.BaseApplication
-import com.sm.products.core.utils.networkMonitor.NetworkMonitor
+import com.sm.products.core.networkMonitor.NetworkMonitor
 import com.sm.products.data.remote.ProductApi
 import com.sm.products.data.repository.ProductRepository
 import com.sm.products.domain.repository.IProductRepository

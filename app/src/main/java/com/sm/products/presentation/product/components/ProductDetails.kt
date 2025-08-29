@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.sm.products.core.presentation.components.image.CoilImage
-import com.sm.products.core.utils.extensions.shimmer
+import com.sm.products.core.presentation.utils.extensions.shimmer
 import com.sm.products.domain.model.Product
 
 

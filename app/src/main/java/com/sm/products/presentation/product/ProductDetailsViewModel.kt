@@ -2,13 +2,12 @@ package com.sm.products.presentation.product
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ramcosta.composedestinations.generated.destinations.ProductScreenRootDestination
+import com.ramcosta.composedestinations.generated.destinations.ProductDetailsScreenRootDestination
 import com.sm.products.core.BaseApplication
 import com.sm.products.core.domain.onError
 import com.sm.products.core.domain.onSuccess
-import com.sm.products.core.utils.toUiText
+import com.sm.products.core.presentation.utils.toUiText
 import com.sm.products.domain.repository.IProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,16 +20,16 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductViewModel @Inject constructor(
+class ProductDetailsViewModel @Inject constructor(
     private val repository: IProductRepository,
     application: BaseApplication,
     savedStateHandle: SavedStateHandle,
 ) : AndroidViewModel(application) {
 
-    private val productId  = ProductScreenRootDestination.argsFrom(savedStateHandle).productId
+    private val productId  = ProductDetailsScreenRootDestination.argsFrom(savedStateHandle).productId
 
-    private val _uiState = MutableStateFlow(ProductUiState())
-    val uiState: StateFlow<ProductUiState> = _uiState.onStart {
+    private val _uiState = MutableStateFlow(ProductDetailsUiState())
+    val uiState: StateFlow<ProductDetailsUiState> = _uiState.onStart {
         if(_uiState.value.data == null){
             getProduct()
         }

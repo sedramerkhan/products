@@ -14,7 +14,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.sm.products.core.utils.extensions.shimmer
+import com.sm.products.core.presentation.utils.extensions.shimmer
 import com.sm.products.domain.model.Product
 
 @Composable

@@ -1,4 +1,4 @@
-package com.sm.products.core.utils
+package com.sm.products.core.presentation.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource

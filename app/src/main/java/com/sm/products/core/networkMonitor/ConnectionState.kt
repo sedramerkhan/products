@@ -1,4 +1,4 @@
-package com.sm.products.core.utils.networkMonitor
+package com.sm.products.core.networkMonitor
 
 sealed class ConnectionState {
     object Available : ConnectionState()

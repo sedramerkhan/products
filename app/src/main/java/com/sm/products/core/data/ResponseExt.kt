@@ -3,7 +3,7 @@ package com.sm.products.core.data
 import android.util.Log
 import com.sm.products.core.domain.DataError
 import com.sm.products.core.domain.Result
-import com.sm.products.core.utils.networkMonitor.NetworkMonitor
+import com.sm.products.core.networkMonitor.NetworkMonitor
 import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException

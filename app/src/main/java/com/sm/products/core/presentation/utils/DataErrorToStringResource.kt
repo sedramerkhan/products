@@ -1,4 +1,4 @@
-package com.sm.products.core.utils
+package com.sm.products.core.presentation.utils
 
 import com.sm.products.core.domain.DataError
 import com.sm.products.R

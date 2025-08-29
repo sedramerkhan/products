@@ -1,9 +1,9 @@
 package com.sm.products.presentation.product
 
-import com.sm.products.core.utils.UiText
+import com.sm.products.core.presentation.utils.UiText
 import com.sm.products.domain.model.Product
 
-data class ProductUiState(
+data class ProductDetailsUiState(
     val isLoading: Boolean = true,
     val data: Product?= null,
     val error: UiText? = null

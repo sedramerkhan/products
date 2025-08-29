@@ -9,7 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
-import com.ramcosta.composedestinations.generated.destinations.ProductScreenRootDestination
+import com.ramcosta.composedestinations.generated.destinations.ProductDetailsScreenRootDestination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.sm.products.core.presentation.components.ErrorView
 import com.sm.products.core.presentation.components.PullToRefreshBox
@@ -30,7 +30,7 @@ fun ProductsScreenRoot(
     ProductsScreen(
         state, viewModel::onPullToRefreshTrigger, viewModel::getProducts,
         onProductClicked = { id ->
-            navigator.navigate(ProductScreenRootDestination(id))
+            navigator.navigate(ProductDetailsScreenRootDestination(id))
 
         }
     )
