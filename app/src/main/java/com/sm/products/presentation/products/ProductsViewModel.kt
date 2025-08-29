@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sm.products.core.domain.onError
 import com.sm.products.core.domain.onSuccess
-import com.sm.products.core.utils.UiState
 import com.sm.products.core.utils.toUiText
 import com.sm.products.domain.model.Product
 import com.sm.products.domain.repository.IProductRepository
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,10 +24,10 @@ class ProductsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _uiState = MutableStateFlow<UiState<Map<String, List<Product>>>>(UiState.Loading)
-    val uiState: StateFlow<UiState<Map<String, List<Product>>>> = _uiState
+    private val _uiState = MutableStateFlow(ProductsUiState())
+    val uiState: StateFlow<ProductsUiState> = _uiState
         .onStart {
-            if (_uiState.value !is UiState.Success) {
+            if (_uiState.value.data.isNotEmpty()) {
                 getProducts()
             }
         }
@@ -37,31 +37,25 @@ class ProductsViewModel @Inject constructor(
             _uiState.value
         )
 
-    private val _isRefreshing = MutableStateFlow(false)
-
-    val isRefreshing: StateFlow<Boolean> = _isRefreshing
-
     var products: Map<String, List<Product>> = mutableStateMapOf()
 
 
     private suspend fun fetchProducts() {
-        repository.getProducts().onSuccess {
-            products = it.groupBy { it.category }.toMutableMap()
-            _uiState.value = UiState.Success(products)
-        }.onError {
-            _uiState.value = UiState.Error(it.toUiText())
+        repository.getProducts().onSuccess { data->
+            _uiState.update { it.onSuccess(data.groupBy { it.category }.toMutableMap())}
+        }.onError { error ->
+            _uiState.update { it.onError(error.toUiText())}
         }
     }
 
     fun getProducts() = viewModelScope.launch {
-        _uiState.value = UiState.Loading
+        _uiState.update { it.onLoading() }
         fetchProducts()
     }
 
     fun onPullToRefreshTrigger() = viewModelScope.launch {
-        _isRefreshing.value = true
+        _uiState.update { it.onRefreshing() }
         fetchProducts()
-        _isRefreshing.value = false
     }
 
 }

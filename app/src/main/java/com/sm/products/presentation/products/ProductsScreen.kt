@@ -13,7 +13,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.sm.products.core.presentation.components.ErrorView
 import com.sm.products.core.presentation.components.PullToRefreshBox
-import com.sm.products.core.utils.UiState
+import com.sm.products.core.utils.CustomToastHost
 import com.sm.products.domain.model.Product
 import com.sm.products.presentation.products.components.CategoryText
 import com.sm.products.presentation.products.components.ProductCard
@@ -25,22 +25,21 @@ fun ProductsScreenRoot(
     viewModel: ProductsViewModel = hiltViewModel()
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
-    val isRefreshing by viewModel.isRefreshing.collectAsStateWithLifecycle()
 
     //for testability
-    ProductsScreen(state, viewModel.products,isRefreshing,  viewModel::onPullToRefreshTrigger,viewModel::getProducts)
+    ProductsScreen(state, viewModel::onPullToRefreshTrigger, viewModel::getProducts)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductsScreen(
-    state: UiState<Map<String, List<Product>>>,
-    data: Map<String, List<Product>>,
-    isRefreshing: Boolean,
+    state: ProductsUiState,
     pullToRefresh: () -> Unit,
     getProduct: () -> Unit,
 ) {
-    Log.d("cust","dff ${state}")
+    Log.d("cust", "dff ${state}")
+
+
 
 
     Scaffold { innerPadding ->
@@ -48,8 +47,8 @@ fun ProductsScreen(
             .padding(innerPadding)
             .fillMaxSize()
 
-        if(data.isNotEmpty()){
-            PullToRefreshBox(isRefreshing = isRefreshing, onRefresh = pullToRefresh) {
+        if (state.data.isNotEmpty()) {
+            PullToRefreshBox(isRefreshing = state.isRefreshing, onRefresh = pullToRefresh) {
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(2),
                     modifier = modifier,
@@ -57,7 +56,7 @@ fun ProductsScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    data.forEach { category, products ->
+                    state.data.forEach { category, products ->
 
                         // Category should span across 2 columns
                         item(span = { GridItemSpan(maxLineSpan) }) {
@@ -67,28 +66,18 @@ fun ProductsScreen(
                         items(products) { product ->
                             ProductCard(product)
                         }
-
-
                     }
                 }
             }
 
-        }
-
-        when (state) {
-            is UiState.Loading -> {
-                if(data.isEmpty())
-                ProductsLoader(modifier)
+            if (state.error != null) {
+                CustomToastHost(state.error.asString())
             }
-
-            is UiState.Error -> {
-                ErrorView(modifier, state.message.asString(), onRetry = getProduct)
-            }
-
-            is UiState.Success -> {
-            }
-        }
-
+        } else if (state.isLoading) {
+            ProductsLoader(modifier)
+        } else if (state.error != null)
+            ErrorView(modifier, state.error.asString(), onRetry = getProduct)
     }
+
 }
 
