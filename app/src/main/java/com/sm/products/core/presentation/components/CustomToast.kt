@@ -1,4 +1,4 @@
-package com.sm.products.core.utils
+package com.sm.products.core.presentation.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

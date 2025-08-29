@@ -9,8 +9,11 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshState
 import androidx.compose.material3.pulltorefresh.pullToRefresh
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.sm.products.core.utils.networkMonitor.ConnectionState
+import com.sm.products.core.utils.networkMonitor.connectivityState
 
 @Composable
 @ExperimentalMaterial3Api
@@ -30,9 +33,15 @@ fun PullToRefreshBox(
     content: @Composable BoxScope.() -> Unit
 ) {
 
+    //Prevent Refresh if no Internet Connection because state is updating fast so refresh indicator stays
+    val connectionState by connectivityState()
+
     Log.i("isRefreshing", "Pull $isRefreshing")
+
+
     Box(
-        modifier.pullToRefresh(state = state, isRefreshing = isRefreshing, onRefresh = onRefresh),
+        modifier.pullToRefresh(state = state, enabled = connectionState == ConnectionState.Available,
+            isRefreshing = isRefreshing, onRefresh = onRefresh),
         contentAlignment = contentAlignment
     ) {
         content()

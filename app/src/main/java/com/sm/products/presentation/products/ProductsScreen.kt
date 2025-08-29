@@ -11,7 +11,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
 import com.sm.products.core.presentation.components.ErrorView
 import com.sm.products.core.presentation.components.PullToRefreshBox
-import com.sm.products.core.utils.CustomToastHost
+import com.sm.products.core.presentation.components.CustomToastHost
 import com.sm.products.presentation.products.components.ProductsList
 import com.sm.products.presentation.products.components.ProductsListShimmer
 

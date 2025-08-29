@@ -1,19 +1,21 @@
 package com.sm.products.core.data
 
+import android.util.Log
 import com.sm.products.core.domain.DataError
 import com.sm.products.core.domain.Result
-import com.sm.products.core.utils.NetworkChecker
+import com.sm.products.core.utils.networkMonitor.NetworkMonitor
 import retrofit2.Response
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import kotlin.coroutines.cancellation.CancellationException
 
 suspend inline fun <reified T> safeCall(
-    networkChecker: NetworkChecker,
+    networkChecker: NetworkMonitor,
     crossinline execute: suspend () -> Response<T>
 ): Result<T, DataError.Remote> {
     return try {
 
+        Log.i("Custom","safeCall ${networkChecker.isConnected()}")
         if (!networkChecker.isConnected()) {
             return Result.Error(DataError.Remote.NO_INTERNET)
         }

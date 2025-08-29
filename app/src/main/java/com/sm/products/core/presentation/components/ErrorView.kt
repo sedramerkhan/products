@@ -36,14 +36,14 @@ fun ErrorView(
             Icon(
                 painter = rememberVectorPainter(Icons.Default.Warning),
                 tint = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.size(104.dp),
+                modifier = Modifier.size(100.dp),
                 contentDescription = ""
             )
 
 
             Text(
                 text = errorMessage,
-                style =  MaterialTheme.typography.headlineLarge,
+                style =  MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 16.dp)
             )
