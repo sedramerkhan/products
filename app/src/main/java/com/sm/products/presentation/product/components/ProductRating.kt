@@ -16,11 +16,12 @@ import com.sm.products.R
 
 @Composable
 fun ProductRating(
+    modifier: Modifier,
     rate: Double,
     reviewsCount: Int
 ){
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         )

@@ -16,9 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.sm.products.R
 
 @Composable
-fun ProductDescription(description: String) {
+fun ProductDescription(
+    modifier: Modifier,
+    description: String) {
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier.padding(12.dp)

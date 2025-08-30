@@ -56,19 +56,7 @@ fun ProductsListShimmer(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item(span = { GridItemSpan(maxLineSpan) }) {
-            Box(
-                modifier = Modifier
-                    .padding(top = 16.dp, bottom = 8.dp)
-                    .height(30.dp)
-            ) {
-                Box(
-                    modifier = Modifier
-                        .width(200.dp)
-                        .fillMaxHeight()
-
-                        .shimmer(cornerRadius = 8.dp)
-                )
-            }
+          CategoryTextShimmer()
         }
 
         items(6) {

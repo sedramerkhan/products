@@ -15,10 +15,11 @@ import kotlin.text.replaceFirstChar
 
 @Composable
 fun ProductCategory(
+    modifier: Modifier = Modifier,
     category: String
 ){
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer
         )

@@ -6,8 +6,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.Navigator
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.sm.products.core.presentation.components.ErrorView
 import com.sm.products.presentation.product.components.ProductDetails
 import com.sm.products.presentation.product.components.ProductDetailsShimmer
@@ -17,12 +19,16 @@ import com.sm.products.presentation.product.components.ProductDetailsShimmer
 fun ProductDetailsScreenRoot(
     productId: Int,
     viewModel: ProductDetailsViewModel = hiltViewModel(),
+    navigator: DestinationsNavigator,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
 
     ProductDetailsScreen(
         state = state,
         onRetry = viewModel::getProduct,
+        onBackClicked = {
+            navigator.navigateUp()
+        }
     )
 }
 
@@ -30,7 +36,8 @@ fun ProductDetailsScreenRoot(
 @Composable
 fun ProductDetailsScreen(
     state: ProductDetailsUiState,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    onBackClicked: () -> Unit,
 ) {
 
     Scaffold { innerPadding ->
@@ -41,7 +48,8 @@ fun ProductDetailsScreen(
         if (state.data != null) {
             ProductDetails(
                 product = state.data,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                onBackClicked = onBackClicked
             )
         } else if (state.isLoading) {
             ProductDetailsShimmer(modifier)
