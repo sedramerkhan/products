@@ -25,6 +25,8 @@ class MainActivity : ComponentActivity() {
                         engine = engine,
                         navController = navController
                     )
+                     //First Destination is ProductsScreenRoot and it navigate to
+                // ProductDetailsScreenRoot
 
             }
         }
