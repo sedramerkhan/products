@@ -12,9 +12,9 @@ import androidx.compose.ui.platform.LocalContext
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
+import java.util.concurrent.ConcurrentHashMap
 import javax.inject.Inject
 import javax.inject.Singleton
-
 
 
 @Singleton
@@ -33,12 +33,18 @@ class NetworkMonitor @Inject constructor(
     fun observeConnectivityAsFlow() = callbackFlow {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
+        // thread-safe set of active networks
+        val activeNetworks = ConcurrentHashMap.newKeySet<Network>()
+
         val callback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
-                trySend(ConnectionState.Available)
+                activeNetworks.add(network)
+                trySend(getCurrentState(activeNetworks))
             }
+
             override fun onLost(network: Network) {
-                trySend(ConnectionState.Unavailable)
+                activeNetworks.remove(network)
+                trySend(getCurrentState(activeNetworks))
             }
         }
 
@@ -47,18 +53,16 @@ class NetworkMonitor @Inject constructor(
             .build()
 
         cm.registerNetworkCallback(request, callback)
+
         // send current state immediately
-        trySend(getCurrentState(cm))
+        val initialState = if (isConnected()) ConnectionState.Available else ConnectionState.Unavailable
+        trySend(initialState)
 
         awaitClose { cm.unregisterNetworkCallback(callback) }
     }
 
-    private fun getCurrentState(cm: ConnectivityManager): ConnectionState {
-        val connected = cm.allNetworks.any { network ->
-            cm.getNetworkCapabilities(network)
-                ?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
-        }
-        return if (connected) ConnectionState.Available else ConnectionState.Unavailable
+    private fun getCurrentState(activeNetworks: Set<Network>): ConnectionState {
+        return if (activeNetworks.isNotEmpty()) ConnectionState.Available else ConnectionState.Unavailable
     }
 }
 

@@ -13,17 +13,16 @@ import com.sm.products.domain.repository.IProductRepository
 
 class ProductRepository(
     private val api: ProductApi,
-    private val networkChecker: NetworkMonitor
 ) : IProductRepository {
     override suspend fun getProducts(): Result<List<Product>, DataError.Remote> =
-        safeCall<List<ProductResponse>>(networkChecker) {
+        safeCall<List<ProductResponse>>() {
             api.getProducts()
         }.map {
             it.map { it.toDomain() }
         }
 
     override suspend fun getProduct(id: Int): Result<Product, DataError.Remote> =
-        safeCall<ProductResponse>(networkChecker) {
+        safeCall<ProductResponse>() {
             api.getProduct(id)
         }.map { productResponse: ProductResponse ->
             productResponse.toDomain()
