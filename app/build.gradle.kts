@@ -4,6 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
+
 }
 
 android {
@@ -64,7 +66,8 @@ dependencies {
 
     // Retrofit for networking
     implementation(libs.retrofit)
-    implementation(libs.retrofit.gson)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.kotlinx.serialization.json)
 
     // Hilt for dependency injection
     implementation(libs.hilt.android)

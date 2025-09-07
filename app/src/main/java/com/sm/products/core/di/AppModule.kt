@@ -2,9 +2,9 @@ package com.sm.products.core.di
 
 import android.content.Context
 import android.util.Log
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 import com.sm.products.core.BaseApplication
-import com.sm.products.core.networkMonitor.NetworkMonitor
 import com.sm.products.data.remote.ProductApi
 import com.sm.products.data.repository.ProductRepository
 import com.sm.products.domain.repository.IProductRepository
@@ -13,11 +13,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -55,10 +56,14 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        val json = Json {
+            ignoreUnknownKeys = true
+            isLenient = true
+        }
         return Retrofit.Builder()
             .baseUrl("https://fakestoreapi.com/")
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
 
@@ -70,8 +75,8 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideProductRepository(api: ProductApi, networkChecker: NetworkMonitor) : IProductRepository =
-        ProductRepository(api, networkChecker)
+    fun provideProductRepository(api: ProductApi) : IProductRepository =
+        ProductRepository(api)
 
 
 }
