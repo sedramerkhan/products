@@ -19,3 +19,10 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class com.sm.products.data.model.** { *; }
+-keep class com.sm.products.domain.model.** { *; }
+-keep class com.sm.products.core.domain.model.** { *; }
+
+-keep class io.ktor.** { *; }
+-dontwarn io.ktor.**
